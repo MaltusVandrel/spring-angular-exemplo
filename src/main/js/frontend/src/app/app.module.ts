@@ -3,23 +3,35 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { ProductListComponent } from './product-list/product-list.component';
+import { TableBasicExample } from './table-basic-example/table-basic-example.component';
+import { FullMaterialModule } from './material-module';
+
+
+
+import { TarefaService } from './services/tarefa.service';
 
 @NgModule({
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FullMaterialModule,
+    HttpClient, HttpHeaders,
     RouterModule.forRoot([
-      { path: '', component: ProductListComponent },
+      { path: '', component: TableBasicExample },
     ])
   ],
   declarations: [
     AppComponent,
     TopBarComponent,
-    ProductListComponent
+    ProductListComponent,
+    TableBasicExample
   ],
+  providers:[ TarefaService ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

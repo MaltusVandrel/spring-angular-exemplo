@@ -1,4 +1,4 @@
-/* Global Styles */
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 * {
   font-family: 'Roboto', Arial, sans-serif;
