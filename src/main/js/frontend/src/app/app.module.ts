@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
@@ -20,7 +20,7 @@ import { TarefaService } from './services/tarefa.service';
     BrowserModule,
     ReactiveFormsModule,
     FullMaterialModule,
-    HttpClient, HttpHeaders,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: TableBasicExample },
     ])
