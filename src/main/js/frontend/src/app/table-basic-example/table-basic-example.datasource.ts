@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import {TarefaService} from '../services/tarefa.service';
 import {Tarefa,SituacaoTarefa} from '../services/tarefa.model';
-
+import {MatTableDataSource} from '@angular/material/table';
 
 // TODO: replace this with real data from your application
 const EXAMPLE_DATA: Tarefa[] = [
@@ -21,7 +21,7 @@ const EXAMPLE_DATA: Tarefa[] = [
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class DataTableTarefa extends DataSource<Tarefa> {
+export class DataTableTarefa extends MatTableDataSource<Tarefa> {
   data: Tarefa[] = EXAMPLE_DATA;
 
   constructor(private tarefaService:TarefaService){
@@ -34,7 +34,7 @@ export class DataTableTarefa extends DataSource<Tarefa> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<any[]> {
+  connect(): Observable<Tarefa[]> {
 
     return this.tarefaService.getPage({perPage:5,page:0,object:{titulo:""},sort:{orders:[]}});
     
