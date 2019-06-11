@@ -1,25 +1,25 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <mat-table [dataSource]="dataSource" matSort>
     <!-- id Column -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
     </ng-container>
 
     <!-- titulo Column -->
     <ng-container matColumnDef="titulo">
-      <th mat-header-cell *matHeaderCellDef> Titulo </th>
-      <td mat-cell *matCellDef="let element"> {{element.titulo}} </td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Titulo </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.titulo}} </mat-cell>
     </ng-container>
 
     <!-- situacao Column -->
     <ng-container matColumnDef="situacao">
-      <th mat-header-cell *matHeaderCellDef> Situacao </th>
-      <td mat-cell *matCellDef="let element"> {{element.situacao}} </td>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Situacao </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.situacao}} </mat-cell>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.length"  showFirstLastButtons></mat-paginator>
 </div>

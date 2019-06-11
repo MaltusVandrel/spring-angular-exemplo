@@ -1,20 +1,12 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import { map, timeout } from 'rxjs/operators';
+import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 import {TarefaService} from '../services/tarefa.service';
-import {Tarefa,SituacaoTarefa} from '../services/tarefa.model';
+import {Tarefa,SituacaoTarefa} from '../model/tarefa.model';
+import {Page} from '../model/page.ajax.model';
 import {MatTableDataSource} from '@angular/material/table';
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: Tarefa[] = [
-  {id: 1, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA},
-  {id: 2, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA},
-  {id: 3, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA},
-  {id: 4, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA},
-  {id: 5, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA},
-  {id: 6, titulo: 'Aberta', descricao: "Teste Teste Teste",abertura:null,fechamento:null,situacao:SituacaoTarefa.ABERTA}
-];
 
 /**
  * Data source for the DataTable view. This class should
@@ -22,10 +14,12 @@ const EXAMPLE_DATA: Tarefa[] = [
  * (including sorting, pagination, and filtering).
  */
 export class DataTableTarefa extends MatTableDataSource<Tarefa> {
-  data: Tarefa[] = EXAMPLE_DATA;
+  data: Tarefa[] = [];
+  private all: BehaviorSubject<Tarefa[]> = new BehaviorSubject([]);
+  page:Page<Tarefa>;
+  length:number=0;
 
-  constructor(private tarefaService:TarefaService){
-  //,private paginator: MatPaginator, private sort: MatSort) {
+  constructor(private tarefaService:TarefaService, paginator: MatPaginator, sort: MatSort){
     super();
   }
 
@@ -34,10 +28,17 @@ export class DataTableTarefa extends MatTableDataSource<Tarefa> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<Tarefa[]> {
-
-    return this.tarefaService.getPage({perPage:5,page:0,object:{titulo:""},sort:{orders:[]}});
-    
+  connect(): BehaviorSubject<Tarefa[]> {
+    this.refresh();
+    return this.all;    
+  }
+  refresh():void{
+    this.tarefaService.getPage({perPage:this.paginator.pageSize,page:this.paginator.pageIndex,object:{titulo:""},sort:{orders:[]}}).subscribe(data=>{
+      this.page=data;
+      this.data=data.content;
+      this.all.next(data.content);
+      this.length=this.page.totalElements;
+    });
   }
 
   /**
@@ -51,9 +52,4 @@ export class DataTableTarefa extends MatTableDataSource<Tarefa> {
    * this would be replaced by requesting the appropriate data from the server.
    */
 
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a, b, isAsc) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 
@@ -13,6 +14,7 @@ import { FullMaterialModule } from './material-module';
 
 
 
+
 import { TarefaService } from './services/tarefa.service';
 
 @NgModule({
@@ -21,6 +23,7 @@ import { TarefaService } from './services/tarefa.service';
     ReactiveFormsModule,
     FullMaterialModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: TableBasicExample },
     ])
