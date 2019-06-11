@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {TarefaService} from '../services/tarefa.service';
 import {DataTableTarefa} from './table-basic-example.datasource';
@@ -31,16 +31,11 @@ export class TableBasicExample implements OnInit{
       this.paginator.pageIndex = 0;
     });
     this.dataSource.paginator = this.paginator;
-    this.paginator.page
-        .pipe(
-            tap(() => this.dataSource.refresh(),()=>{},()=>{
-              length=this.dataSource.length;
-            })
-                        
-        )
-        .subscribe();
+    
   }  
-  
+  getPage(e: PageEvent){
+    this.dataSource.refresh()
+  }
   displayedColumns: string[] = ['id', 'titulo', 'situacao'];
   dataSource = new DataTableTarefa(this.tarefaService,this.paginator,this.sort);
 }

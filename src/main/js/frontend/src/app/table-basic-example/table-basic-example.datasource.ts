@@ -35,7 +35,6 @@ export class DataTableTarefa extends MatTableDataSource<Tarefa> {
   refresh():void{
     this.tarefaService.getPage({perPage:this.paginator.pageSize,page:this.paginator.pageIndex,object:{titulo:""},sort:{orders:[]}}).subscribe(data=>{
       this.page=data;
-      this.data=data.content;
       this.all.next(data.content);
       this.length=this.page.totalElements;
     });
