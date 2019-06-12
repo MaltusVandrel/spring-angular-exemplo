@@ -20,16 +20,5 @@ export class TarefaService {
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     return this.http
     .post<Page<Tarefa>>('//localhost:8080/grid', param, {headers : headers});
-    /*
-    var headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    let observable = this.http
-    .post<page<Tarefa>>('//localhost:8080/grid', param, {headers : headers})
-    .pipe(
-      map((item:page<Tarefa>)=>{return item.content })
-    );
-    
-    return observable;
-    */
   }
 }

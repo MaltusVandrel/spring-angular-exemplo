@@ -1,25 +1,25 @@
 <div class="mat-elevation-z8">
-  <mat-table [dataSource]="dataSource" matSort>
+  <mat-table [dataSource]="dataSource" matMultiSort>
     <!-- id Column -->
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-multi-sort-header="id"> ID </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
     </ng-container>
 
     <!-- titulo Column -->
     <ng-container matColumnDef="titulo">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Titulo </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-multi-sort-header="titulo"> Titulo </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.titulo}} </mat-cell>
     </ng-container>
 
     <!-- situacao Column -->
     <ng-container matColumnDef="situacao">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Situacao </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-multi-sort-header="situacao"> Situacao </mat-header-cell>
       <mat-cell *matCellDef="let element"> {{element.situacao}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.length" (page)="getPage($event)"  showFirstLastButtons></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.page?.totalElements" (page)="getPage($event)"  showFirstLastButtons></mat-paginator>
 </div>

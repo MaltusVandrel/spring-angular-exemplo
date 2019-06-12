@@ -11,7 +11,7 @@ import { TopBarComponent } from './top-bar/top-bar.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { TableBasicExample } from './table-basic-example/table-basic-example.component';
 import { FullMaterialModule } from './material-module';
-
+import { MatMultiSortModule } from './lib/mat-multi-sort.module';
 
 
 
@@ -24,6 +24,7 @@ import { TarefaService } from './services/tarefa.service';
     FullMaterialModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatMultiSortModule,
     RouterModule.forRoot([
       { path: '', component: TableBasicExample },
     ])

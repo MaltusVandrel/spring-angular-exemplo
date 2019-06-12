@@ -6,49 +6,64 @@ import {TarefaService} from '../services/tarefa.service';
 import {Tarefa,SituacaoTarefa} from '../model/tarefa.model';
 import {Page} from '../model/page.ajax.model';
 import {MatTableDataSource} from '@angular/material/table';
+import { MatMultiSort } from '../lib/mat-multi-sort.directive';
 
+export class OrderAjax{
+  direction:string;
+  property:string;
+}
+export class SortAjax{
+  orders:OrderAjax[];
+  constructor(orders:OrderAjax[]){
+    this.orders=orders;
+  }
+}
+export class PageAjax{
+  perPage:number;
+  page:number;
+  object:Object;
+  sort:SortAjax;
+  constructor(object:Object,page:number,perPage:number,orders:OrderAjax[]){
+    this.object=object;
+    this.page=page;
+    this.perPage=perPage;
+    this.sort=new SortAjax(orders);
+  }  
+}
 
-/**
- * Data source for the DataTable view. This class should
- * encapsulate all logic for fetching and manipulating the displayed data
- * (including sorting, pagination, and filtering).
- */
 export class DataTableTarefa extends MatTableDataSource<Tarefa> {
   data: Tarefa[] = [];
   private all: BehaviorSubject<Tarefa[]> = new BehaviorSubject([]);
   page:Page<Tarefa>;
-  length:number=0;
-
-  constructor(private tarefaService:TarefaService, paginator: MatPaginator, sort: MatSort){
+  sort:MatMultiSort;
+  constructor(private tarefaService:TarefaService, paginator: MatPaginator, sort: MatMultiSort){
     super();
   }
-
-  /**
-   * Connect this data source to the table. The table will only update when
-   * the returned stream emits new items.
-   * @returns A stream of the items to be rendered.
-   */
   connect(): BehaviorSubject<Tarefa[]> {
     this.refresh();
     return this.all;    
   }
   refresh():void{
-    this.tarefaService.getPage({perPage:this.paginator.pageSize,page:this.paginator.pageIndex,object:{titulo:""},sort:{orders:[]}}).subscribe(data=>{
-      this.page=data;
-      this.all.next(data.content);
-      this.length=this.page.totalElements;
+    let page:PageAjax = new PageAjax(
+      {titulo:""},
+      this.paginator.pageIndex,
+      this.paginator.pageSize,
+      this.sort.actives.filter((property,index) => {
+        let value:boolean=property!=undefined&&property!=""&&this.sort.directions[index]!=undefined&&this.sort.directions[index]!="";
+        return value;
+      }).map((property,index) => {
+        let order:OrderAjax=new OrderAjax();
+        order.property = property;
+        order.direction = this.sort.directions[index].toUpperCase();
+        return order;
+      })
+    );
+
+    this.tarefaService.getPage(page).subscribe(page=>{
+      this.page=page;
+      this.all.next(page.content);
     });
   }
-
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
   disconnect() {}
-
-  /**
-   * Paginate the data (client-side). If you're using server-side pagination,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
 
 }
